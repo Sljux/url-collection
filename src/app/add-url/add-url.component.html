@@ -1,3 +1,41 @@
-<p>
-  add-url works!
-</p>
+<div class="row">
+  <div class="col-12 col-md-6 offset-md-3">
+    <form #form="ngForm">
+      <div class="form-group">
+        <label for="address">URL</label>
+        <input type="url" placeholder="Enter URL" id="address" class="form-control"
+               name="address"
+               #addressModel="ngModel"
+               [class.is-invalid]="(addressModel.touched || addressModel.dirty) && addressModel.invalid"
+               [(ngModel)]="address"
+               required>
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" placeholder="Enter name" id="name" class="form-control"
+               name="name"
+               #nameModel="ngModel"
+               [class.is-invalid]="(nameModel.touched || nameModel.dirty) && nameModel.invalid"
+               [(ngModel)]="name"
+               required>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" placeholder="Enter description" id="description" class="form-control"
+               name="description"
+               [(ngModel)]="description">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary"
+                [disabled]="form.invalid"
+                (click)="saveUrl()">
+          Save URL
+        </button>
+        <button class="btn"
+                (click)="clearUrl()">
+          Clear
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
