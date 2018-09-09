@@ -61,7 +61,7 @@ describe('UrlService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should add url successfully in-memory storage', () => {
+  it('should add url successfully to in-memory storage', () => {
     service.addUrl(name, address, description);
 
     const url = service.getUrls()[0];
@@ -90,7 +90,7 @@ describe('UrlService', () => {
     expect(url.lastVisit).toBeCloseTo(now, 1);
   });
 
-  it('should add http:// to start of address if not present', () => {
+  it('should add protocol to address if not present', () => {
     const addressWithoutProtocol = 'www.google.com';
 
     service.addUrl(name, addressWithoutProtocol, description);
