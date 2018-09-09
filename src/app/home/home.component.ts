@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { UrlService } from '../services/url.service';
+import { Url } from '../models/url';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  urls: Url[];
 
-  ngOnInit() {
+  constructor(private urlService: UrlService) {
   }
 
+  ngOnInit() {
+    this.urls = this.urlService.getUrls();
+  }
 }

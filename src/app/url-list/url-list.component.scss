@@ -1,0 +1,31 @@
+.header {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-bottom: 1rem;
+
+  .left,
+  .middle {
+    cursor: pointer;
+  }
+}
+
+.col {
+  display: flex;
+  align-items: center;
+
+  &.left {
+    justify-content: left;
+  }
+
+  &.middle {
+    justify-content: center;
+  }
+
+  &.right {
+    justify-content: right;
+  }
+}
+
+.name {
+  text-transform: uppercase;
+}

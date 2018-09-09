@@ -7,6 +7,6 @@ export interface Url {
 
 export function isUrl(object: any): object is Url {
   return 'name' in object
-    && 'url' in object
+    && 'address' in object
     && 'lastVisit' in object;
 }

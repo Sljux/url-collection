@@ -7,6 +7,9 @@ import { AddUrlComponent } from './add-url/add-url.component';
 import { BrokenUrlsComponent } from './broken/broken-urls.component';
 import { HeaderComponent } from './header/header.component';
 import { FormsModule } from '@angular/forms';
+import { UrlListComponent } from './url-list/url-list.component';
+import { MomentModule } from 'ngx-moment';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,11 +18,14 @@ import { FormsModule } from '@angular/forms';
     AddUrlComponent,
     BrokenUrlsComponent,
     HeaderComponent,
+    UrlListComponent,
   ],
   imports: [
     BrowserModule,
     RoutingModule,
     FormsModule,
+    MomentModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

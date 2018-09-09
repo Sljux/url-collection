@@ -6,7 +6,7 @@ import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-add-url',
   templateUrl: './add-url.component.html',
-  styleUrls: ['./add-url.component.css']
+  styleUrls: ['./add-url.component.scss']
 })
 export class AddUrlComponent {
 

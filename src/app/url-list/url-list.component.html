@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-12 col-md-8 offset-md-2">
+
+    <div class="row header">
+      <div class="col left" (click)="selectedSort = SortOption.name; sort()">
+        Name <span *ngIf="selectedSort === SortOption.name">(sorted)</span>
+      </div>
+      <div class="col middle" (click)="selectedSort = SortOption.lastVisited; sort()">
+        Last visited <span *ngIf="selectedSort === SortOption.lastVisited">(sorted)</span>
+      </div>
+      <div class="col right">Options</div>
+    </div>
+
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let url of _urls; let i = index">
+
+        <div class="row">
+          <div class="col left name">{{ url.name }}</div>
+          <div class="col middle">{{ url.lastVisit | amDateFormat:'DD. MMM @ HH:mm' }}</div>
+          <div class="col right">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="open(url)">Open</button>
+              <button class="btn" (click)="remove(i)">✕</button>
+            </div>
+          </div>
+        </div>
+
+      </li>
+    </ul>
+
+  </div>
+</div>

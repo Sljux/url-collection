@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { isUrl, Url } from '../models/url';
+import { HttpClient } from '@angular/common/http';
 
 const storageKey = 'url-coll';
 
@@ -8,35 +9,72 @@ const storageKey = 'url-coll';
 })
 export class UrlService {
 
-  urls: Url[];
+  private _urls: Url[];
 
-  constructor() {
+  getUrls(): Url[] {
+    return this._urls.slice(0);
+  }
+
+  constructor(private http: HttpClient) {
     this.loadFromStorage();
   }
 
   private loadFromStorage() {
     try {
-      this.urls = urlsFromStorage();
+      this._urls = urlsFromStorage();
     } catch (e) {
-      this.urls = [];
+      console.error(e);
+
+      this._urls = [];
     }
   }
 
   addUrl(name: string, address: string, description?: string) {
-    this.urls.push({ name, address, description, lastVisit: Date.now() });
+    if (!address.startsWith('http')) {
+      address = 'http://' + address;
+    }
 
-    saveUrlsToStorage(this.urls);
+    this._urls.push({ name, address, description, lastVisit: Date.now() });
+    this.saveUrls();
   }
 
   removeUrl(url: Url) {
-    const index = this.urls.indexOf(url);
+    const index = this.urlIndex(url);
+
+    this._urls.splice(index, 1);
+    this.saveUrls();
+  }
+
+  touchUrl(url: Url) {
+    const index = this.urlIndex(url);
+
+    this._urls[index].lastVisit = Date.now();
+    this.saveUrls();
+  }
+
+  openUrl(url: Url) {
+    window.open(url.address, '_blank');
+    this.touchUrl(url);
+  }
+
+  checkUrl(url: Url): Promise<boolean> {
+    // Will fail on different hosts  due to CORS
+    return this.http.head(url.address).toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  private urlIndex(url: Url) {
+    const index = this._urls.indexOf(url);
 
     if (index === -1) {
       throw new Error('URL not saved');
     }
+    return index;
+  }
 
-    this.urls.splice(index, 1);
-    saveUrlsToStorage(this.urls);
+  private saveUrls() {
+    localStorage.setItem(storageKey, JSON.stringify(this._urls));
   }
 
 }
@@ -45,26 +83,25 @@ function urlsFromStorage(): Url[] {
   let items: any[];
 
   try {
-    items = JSON.parse(localStorage.getItem(storageKey));
+    const storageItem = localStorage.getItem(storageKey);
+
+    if (storageItem == null) {
+      return [];
+    }
+
+    items = JSON.parse(storageItem);
   } catch (e) {
-    throwCorruptedDataError();
+    throw new Error('Local storage data not valid JSON');
   }
 
   if (!Array.isArray(items)) {
-    throwCorruptedDataError();
+    throw new Error('Local storage data not an array');
   }
 
   if (items.some(i => !isUrl(i))) {
-    throwCorruptedDataError();
+    throw new Error('Local storage data corrupted');
   }
 
   return items;
 }
 
-function saveUrlsToStorage(urls: Url[]) {
-  localStorage.setItem(storageKey, JSON.stringify(urls));
-}
-
-function throwCorruptedDataError() {
-  throw new Error('Local storage data corrupted');
-}
