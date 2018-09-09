@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { isUrl, Url } from '../models/url';
 import { HttpClient } from '@angular/common/http';
 
-const storageKey = 'url-coll';
+export const STORAGE_KEY = 'url-coll';
 
 @Injectable({
   providedIn: 'root'
@@ -74,7 +74,7 @@ export class UrlService {
   }
 
   private saveUrls() {
-    localStorage.setItem(storageKey, JSON.stringify(this._urls));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this._urls));
   }
 
 }
@@ -83,7 +83,7 @@ function urlsFromStorage(): Url[] {
   let items: any[];
 
   try {
-    const storageItem = localStorage.getItem(storageKey);
+    const storageItem = localStorage.getItem(STORAGE_KEY);
 
     if (storageItem == null) {
       return [];
